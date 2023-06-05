@@ -1,0 +1,5 @@
+discord.py
+async-google-trans-new
+Flask
+replit
+urlib3
