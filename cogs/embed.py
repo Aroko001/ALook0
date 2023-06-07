@@ -4,7 +4,7 @@ import discord
 from discord import ui, TextStyle
 
 class Modal(ui.Modal, title="Embed作成"):
-    title = ui.TextInput(label="タイトル", style=TextStyle.short, placeholder="埋め込みのタイトル", required=True,)
+    titles = ui.TextInput(label="タイトル", style=TextStyle.short, placeholder="埋め込みのタイトル", required=True,)
     description = ui.TextInput(label="説明", style=TextStyle.long, placeholder="埋め込みの説明", max_length=4000, required=False,)
     picture = ui.TextInput(label="画像", style=TextStyle.short, placeholder="埋め込みの画像", required=False,)
 
@@ -17,14 +17,14 @@ class Modal(ui.Modal, title="Embed作成"):
                 "URLはhttp(s)から始まります。", ephemeral=True
             )
             return
-        embed = discord.Embed(title=self.title)
+        embed = discord.Embed(title=self.titles)
         if self.description:
-            embed = discord.Embed(title=self.title, description=self.description)
+            embed = discord.Embed(title=self.titles, description=self.description)
             if self.picture:
-                embed = discord.Embed(title=self.title, description=self.description)
+                embed = discord.Embed(title=self.titles, description=self.description)
                 embed.set_footer(icon_url=self.picture)
         if self.picture:
-            embed = discord.Embed(title=self.title)
+            embed = discord.Embed(title=self.titles)
             embed.set_footer(icon_url=self.picture)
 
         await interaction.response.send_message(embed=embed)
