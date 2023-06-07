@@ -6,6 +6,8 @@ from discord import ui, TextStyle
 import os
 
 class Modal(ui.Modal, title="コード実行"):
+    def __init__(self, bot: commands.Bot) -> None:
+        self.bot: commands.Bot = bot
     codes = ui.TextInput(label="コード", style=TextStyle.long, placeholder="実行するコード", max_length=4000, required=True,)
 
     async def on_submit(self, interaction: discord.Interaction):
