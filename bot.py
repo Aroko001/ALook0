@@ -55,6 +55,39 @@ async def cmderror(ctx, errors):
   embed = discord.Embed(title="おっと...", description="文字コマンドにはサポートしていないようです。", color=discord.Color.red())
   await ctx.send(embed=embed)
 
+@bot.tree.context_menu()
+async def ユーザー情報(i: discord.Interaction, user: discord.User):
+  embed = discord.Embed(title=f"{user.name}のユーザー情報")
+  base = "https://media.discordapp.net/avatars"
+  if hasattr(user.avatar, "key"):
+    embed.set_author(
+      name=f"{user.name}({user})の情報",
+      icon_url=f"{base}/{user.id}/{user.avatar.key}.png",
+    )
+    embed.set_thumbnail(url=f"{base}/{user.id}/{user.avatar.key}.png")
+  else:
+    embed.set_author(
+      name=f"{user.name}({user})",
+      icon_url=user.default_avatar.url,
+    )
+    embed.set_thumbnail(url=user.default_avatar.url)
+  if user.bot is True:
+    b = "はい"
+  else:
+    b = "いいえ"
+  if user.system is True:
+    c = "はい"
+  else:
+    c = "いいえ"
+  embed.add_field(
+    name="アカウント作成日時", value=discord.utils.format_dt(user.created_at, "f")
+  )
+  embed.add_field(name="ユーザー名", value=user.name)
+  embed.add_field(name="ユーザーid", value=f"`{user.id}`")
+  embed.add_field(name="Botアカウントか", value=b)
+  embed.add_field(name="システムユーザーか", value=c)
+  await i.response.send_message(embed=embed, ephemeral=True)
+
 try:
   bot.run(Token)
 except discord.HTTPException:
