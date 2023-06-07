@@ -6,8 +6,6 @@ from discord import ui, TextStyle
 import os
 
 class Modal(ui.Modal, title="コード実行"):
-    def __init__(self, bot: commands.Bot) -> None:
-        self.bot: commands.Bot = bot
     codes = ui.TextInput(label="コード", style=TextStyle.long, placeholder="実行するコード", max_length=4000, required=True,)
 
     async def on_submit(self, interaction: discord.Interaction):
@@ -25,9 +23,6 @@ class Modal(ui.Modal, title="コード実行"):
         embed = discord.Embed(title="Python", color=discord.Color.green())
         embed.add_field(name="コード", value=f"```python\n{str(self.codes)}```", inline=False)
         embed.add_field(name="出力", value=f"```{result.stdout}\n{result.stderr}```")
-        channel = self.bot.get_channel(1098527872811012146)
-        embed2 = discord.Embed(title=f"Python - {interaction.user}|{interaction.user.id}", description=f"code: ```{self.codes}```\nresult:```{result.stdout}\n{result.stderr}```", color=discord.Color.green())
-        await channel.send(embed=embed2)
         await interaction.response.send_message(embed=embed)
         os.remove("././temp.py")
 
