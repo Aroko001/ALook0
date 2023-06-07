@@ -9,7 +9,7 @@ class Modal(ui.Modal, title="コード実行"):
     codes = ui.TextInput(label="コード", style=TextStyle.long, placeholder="実行するコード", max_length=4000, required=True,)
 
     async def on_submit(self, interaction: discord.Interaction):
-        if "import os" in self.codes or "import sys" in self.codes:
+        if "import os" in str(self.codes) or "import sys" in str(self.codes):
           return await interaction.response.send_message(embed=discord.Embed(title="エラー", description="コード内に`os`と`sys`はインポートできません。", color=discord.Color.red()), ephemeral=True)
         if "open" in self.codes:
           return await interaction.response.send_message(embed=discord.Embed(title="エラー", description="ファイルの操作はできません。", color=discord.Color.red()),ephemeral=True)
