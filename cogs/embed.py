@@ -18,7 +18,7 @@ class Modal(ui.Modal, title="Embed作成"):
             )
             return
         embed = discord.Embed(title=self.titles, description=self.description)
-        embed.set_thumbnail(self.picture)
+        embed.set_image(self.picture)
 
         await interaction.response.send_message(embed=embed)
 
