@@ -17,15 +17,8 @@ class Modal(ui.Modal, title="Embed作成"):
                 "URLはhttp(s)から始まります。", ephemeral=True
             )
             return
-        embed = discord.Embed(title=self.titles)
-        if self.description:
-            embed = discord.Embed(title=self.titles, description=self.description)
-            if self.picture:
-                embed = discord.Embed(title=self.titles, description=self.description)
-                embed.set_footer(icon_url=self.picture)
-        if self.picture:
-            embed = discord.Embed(title=self.titles)
-            embed.set_footer(icon_url=self.picture)
+        embed = discord.Embed(title=self.titles, description=self.description)
+        embed.set_thumbnail(self.picture)
 
         await interaction.response.send_message(embed=embed)
 
