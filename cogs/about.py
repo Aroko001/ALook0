@@ -8,15 +8,30 @@ class InviteButton(discord.ui.View):
         self.inv = inv
         self.add_item(discord.ui.Button(label="招待ボタン", url=self.inv))
 
-class about(commands.Cog):
+class 情報(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot: commands.Bot = bot
 
-    @app_commands.command(name="about", description="このbotの情報を表示します。")
-    async def about(self, i: discord.Interaction):
-        embed = discord.Embed(title="このボットの情報", description=f"このbotは[Ar0ko192#0059](https://discord.com/users/790489873957781536)という人物に作られました。\n起動時刻: <t:{self.bot.kidoutime}:F>\n\n関連リンク\n[招待リンク](https://dsc.gg/alook)",color=discord.Color.green())
-        embed.set_thumbnail(url=f"https://media.discordapp.net/avatars/{self.bot.user.id}/{self.bot.user.avatar.key}.png")
-        await i.response.send_message(embed=embed,view=InviteButton(str("https://discord.com/api/oauth2/authorize?client_id=1107181590695645294&permissions=8&scope=bot%20applications.commands")))
+    @app_commands.command(name="ping", description="BotのPing値を表示します。")
+    async def ping(self, i: discord.Interaction):
+        embed = discord.Embed(title="Pong! :ping_pong:", description=f"現在のBotのPing値は{round(self.bot.latency * 1000)}msです。", color=discord.Color.green())
+        await i.response.send_message(embed=embed)
+
+    @app_commands.command(name="bug_report", description="バグ報告をします。")
+    @app_commands.describe(description="報告する内容を入力してください。")
+    async def bugreport(self, i: discord.Interaction, description: str):
+        channel = self.bot.get_channel(1095604986051842138)
+        embed = discord.Embed(title=f"バグ報告 - {i.user}|{i.user.id} - {i.guild}", description=description, color=discord.Color.green())
+        await channel.send(embed=embed)
+        await i.response.send_message("送信しました。ご協力ありがとうございます。", ephemeral=True)
+
+    @app_commands.command(name="feature_suggestion", description="機能提案をします。")
+    @app_commands.describe(description="提案する内容を入力してください。")
+    async def featuresuggestion(self, i: discord.Interaction, description: str):
+        channel = self.bot.get_channel(1095609040589037648)
+        embed = discord.Embed(title=f"機能提案 - {i.user}|{i.user.id} - {i.guild}", description=description, color=discord.Color.green())
+        await channel.send(embed=embed)
+        await i.response.send_message("送信しました。ご協力ありがとうございます。", ephemeral=True)
 
 async def setup(bot: commands.Bot) -> None:
-    await bot.add_cog(about(bot))
+    await bot.add_cog(情報(bot))

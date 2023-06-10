@@ -1,6 +1,7 @@
 import discord
 import itertools
 from datetime import datetime
+import async_google_trans_new
 from os import environ, listdir
 from discord.ext import commands, tasks
 from keep_alive import keep_alive
@@ -87,6 +88,42 @@ async def ユーザー情報(i: discord.Interaction, user: discord.User):
   embed.add_field(name="Botアカウントか", value=b)
   embed.add_field(name="システムユーザーか", value=c)
   await i.response.send_message(embed=embed, ephemeral=True)
+
+@bot.tree.context_menu()
+async def 日本語に翻訳(i: discord.Interaction, message: discord.Message):
+  g = async_google_trans_new.AsyncTranslator()
+  embed = discord.Embed(title="翻訳結果", description=f"日本語へ翻訳: {await g.translate(message.content, 'ja')}", color=discord.Color.green())
+  channel = bot.get_channel(1098527872811012146)
+  embed2 = discord.Embed(title=f"翻訳（アプリ） - {i.user}|{i.user.id}", description=f"lang: ja|text: {message.content}", color=discord.Color.green())
+  await channel.send(embed=embed2)
+  await i.response.send_message(embed=embed, ephemeral=False)
+
+@bot.tree.context_menu()
+async def 英語に翻訳(i: discord.Interaction, message: discord.Message):
+  g = async_google_trans_new.AsyncTranslator()
+  embed = discord.Embed(title="翻訳結果", description=f"英語へ翻訳: {await g.translate(message.content, 'en')}", color=discord.Color.green())
+  channel = bot.get_channel(1098527872811012146)
+  embed2 = discord.Embed(title=f"翻訳（アプリ） - {i.user}|{i.user.id}", description=f"lang: ja|text: {message.content}", color=discord.Color.green())
+  await channel.send(embed=embed2)
+  await i.response.send_message(embed=embed, ephemeral=False)
+
+@bot.tree.context_menu()
+async def プロフィール画像を取得(i: discord.Interaction, user: discord.User):
+  embed = discord.Embed()
+  base = "https://media.discordapp.net/avatars"
+  if hasattr(user.avatar, "key"):
+      embed.set_author(
+          name=f"{user.name}({user})のアバター",
+          icon_url=f"{base}/{user.id}/{user.avatar.key}.png",
+      )
+      embed.set_image(url=f"{base}/{user.id}/{user.avatar.key}.png")
+  else:
+      embed.set_author(
+          name=f"{user.name}({user})のアバター",
+          icon_url=user.default_avatar.url,
+      )
+      embed.set_image(url=user.default_avatar.url)
+  await i.response.send_message(embed=embed, ephemeral=False)
 
 try:
   bot.run(Token)
