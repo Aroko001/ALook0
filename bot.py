@@ -2,10 +2,12 @@ import discord
 import itertools
 from datetime import datetime
 import async_google_trans_new
+import tracemalloc
 from os import environ, listdir
 from discord.ext import commands, tasks
 from keep_alive import keep_alive
 
+tracemalloc.start()
 Token = environ['Token']
 
 class ALookZ(commands.Bot):
