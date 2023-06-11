@@ -1,5 +1,6 @@
 import discord
 import itertools
+import logging
 from datetime import datetime
 import async_google_trans_new
 import tracemalloc
@@ -7,6 +8,7 @@ from os import environ, listdir
 from discord.ext import commands, tasks
 from keep_alive import keep_alive
 
+handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 tracemalloc.start()
 Token = environ['Token']
 
@@ -128,6 +130,6 @@ async def プロフィール画像を取得(i: discord.Interaction, user: discor
   await i.response.send_message(embed=embed, ephemeral=False)
 
 try:
-  bot.run(Token)
+  bot.run(Token, log_handler=handler)
 except discord.HTTPException:
   print("RateLimit Error.")
