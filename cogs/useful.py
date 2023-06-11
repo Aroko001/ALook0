@@ -265,7 +265,7 @@ class 便利(commands.Cog):
         await i.response.send_message(embed=embed, ephemeral=False)
 
     @app_commands.choices(
-        city=[
+        地域=[
             app_commands.Choice(name="札幌", value="016010"),
             app_commands.Choice(name="青森", value="020010"),
             app_commands.Choice(name="秋田", value="050010"),
