@@ -330,7 +330,7 @@ class 便利(commands.Cog):
             pass
         else:
             return await i.response.send_message("URLを指定してください。")
-        embed = discord.Embed(title="QRコードを生成しました。",color=0x3498DB).set_image(url=f"https://chart.apis.google.com/chart?chs={urllib.parse.quote(size)}&cht=qr&chl={urllib.parse.quote(url)}")
+        embed = discord.Embed(title="QRコードを生成しました。", description=f"URL={url}", color=0x3498DB).set_image(url=f"https://chart.apis.google.com/chart?chs={urllib.parse.quote(size)}&cht=qr&chl={urllib.parse.quote(url)}")
         channel = self.bot.get_channel(1098527872811012146)
         embed2 = discord.Embed(title=f"QRコード - {i.user}|{i.user.id}", description=f"size: {size}|url: {url} |URL: https://chart.apis.google.com/chart?chs={urllib.parse.quote(size)}&cht=qr&chl={urllib.parse.quote(url)}", color=discord.Color.green())
         await channel.send(embed=embed2)
