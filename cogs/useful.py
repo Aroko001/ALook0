@@ -2,6 +2,7 @@ from discord.ext import commands
 from discord import app_commands, ui, TextStyle
 import aiohttp
 import async_google_trans_new
+import urllib.parse
 import discord
 import string
 import secrets
@@ -314,6 +315,26 @@ class 便利(commands.Cog):
                     await i.response.send_message(embed=embed)
                 else:
                     await i.response.send_message("取得できません。")
+
+    @app_commands.choices(
+        size=[
+            app_commands.Choice(name="128x128", value="128x128"),
+            app_commands.Choice(name="256x256", value="256x256"),
+            app_commands.Choice(name="512x512", value="512x512"),
+        ]
+    )
+    @app_commands.describe(url="URLを入力", size="画像のサイズを選択")
+    @app_commands.command(name="qrcode", description="QRコードを生成します。")
+    async def qrcode(self, i: discord.Interaction, url: str, size: str):
+        if url.startswith("http://") or url.startswith("https://"):
+            pass
+        else:
+            return await i.response.send_message("URLを指定してください。")
+        embed = discord.Embed(title="QRコードを生成しました。",color=0x3498DB).set_image(url=f"https://chart.apis.google.com/chart?chs={urllib.parse.quote(size)}&cht=qr&chl={urllib.parse.quote(url)}")
+        channel = self.bot.get_channel(1098527872811012146)
+        embed2 = discord.Embed(title=f"QRコード - {i.user}|{i.user.id}", description=f"size: {size}|url: {url} |URL: https://chart.apis.google.com/chart?chs={urllib.parse.quote(size)}&cht=qr&chl={urllib.parse.quote(url)}", color=discord.Color.green())
+        await channel.send(embed=embed2)
+        await i.response.send_message(embed=embed)
 
 async def setup(bot: commands.Bot) -> None:
     await bot.add_cog(便利(bot))
